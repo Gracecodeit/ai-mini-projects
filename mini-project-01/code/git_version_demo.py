@@ -14,8 +14,8 @@ from sklearn.neighbors import KNeighborsClassifier
 
 
 # Git Diff 실습: 3을 5로 바꾼 뒤 다시 실행하고 Commit해 보세요.
-n_neighbors = 3
 
+n_neighbors = 3
 
 def main():
     # scikit-learn에 포함된 Iris 데이터셋 사용 (별도 다운로드 불필요)
