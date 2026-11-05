@@ -50,14 +50,14 @@ MAE를 주요 모델 선택 기준으로 삼았지만, RMSE와 R²에서는 Line
 ```text
 mini-project-01/
 ├── code/
-│   └── 01_regression_bike_sharing.ipynb
+│   └── 01_regression_bike_demand.ipynb
 ├── data/
 │   └── hour.csv
 ├── results/
-│   └── 01_final_regressor.joblib
+│   └── 01_final_model.joblib
 └── docs/
     ├── 01_regression_data_analysis.md
-    ├── 02_regression_model_analysis.md
+    ├── 01_regression_model_analysis.md
     └── adr.md
 ```
 
@@ -69,12 +69,12 @@ cd ai-mini-projects
 uv sync
 ```
 
-VS Code에서 `mini-project-01/code/01_regression_bike_sharing.ipynb`를 열고 `.venv` 커널을 선택한 뒤 실행합니다.
+VS Code에서 `mini-project-01/code/01_regression_bike_demand.ipynb`를 열고 `.venv` 커널을 선택한 뒤 실행합니다.
 
 ### 분석 문서
 
 - [데이터 분석](mini-project-01/docs/01_regression_data_analysis.md)
-- [실험 분석](mini-project-01/docs/02_regression_model_analysis.md)
+- [실험 분석](mini-project-01/docs/01_regression_model_analysis.md)
 - [의사결정 기록(ADR)](mini-project-01/docs/adr.md)
 
 ### 문서 관리 원칙
