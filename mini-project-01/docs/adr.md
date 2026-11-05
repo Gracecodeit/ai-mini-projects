@@ -81,4 +81,4 @@ RF_B를 선택해 비교 모델 중 가장 낮은 Validation MAE를 얻었다. �
 ## 관련 분석 문서
 
 - [데이터 분석](01_regression_data_analysis.md)
-- [실험 분석](02_regression_model_analysis.md)
+- [실험 분석](01_regression_model_analysis.md)
