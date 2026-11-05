@@ -64,7 +64,7 @@ mini-project-01/
 ### 실행 방법
 
 ```bash
-git clone https://github.com/<내아이디>/ai-mini-projects.git
+git clone https://github.com/Gracecodeit/ai-mini-projects.git
 cd ai-mini-projects
 uv sync
 ```
