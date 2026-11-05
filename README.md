@@ -18,7 +18,7 @@
 | 구분 | 파일 |
 |---|---|
 | 실험 코드 | [01_regression_bike_demand.ipynb](mini-project-01/code/01_regression_bike_demand.ipynb) |
-| 실험 결과 | [모델 비교표](mini-project-01/results/01_model_comparison.csv), [시간대별 오류](mini-project-01/results/01_error_by_hour.csv), [최종 모델](mini-project-01/results/01_final_model.joblib) |
+| 실험 결과 | [모델 비교표](mini-project-01/results/01_model_comparison.csv), [최종 모델](mini-project-01/results/01_final_model.joblib) |
 | 분석 | [데이터 분석](mini-project-01/docs/01_regression_data_analysis.md), [모델 분석](mini-project-01/docs/01_regression_model_analysis.md) |
 | 핵심 의사결정 | [ADR](mini-project-01/docs/adr.md) |
 
@@ -71,7 +71,6 @@ mini-project-01/
 │   └── hour.csv
 ├── results/
 │   ├── 01_model_comparison.csv
-│   ├── 01_error_by_hour.csv
 │   └── 01_final_model.joblib
 └── docs/
     ├── 01_regression_data_analysis.md
