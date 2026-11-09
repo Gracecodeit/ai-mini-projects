@@ -4,3 +4,5 @@ __pycache__/
 .env
 checkpoints/
 teacher-ai-mini-projects/
+.ipynb_checkpoints/
+.DS_Store

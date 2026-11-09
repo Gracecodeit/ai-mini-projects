@@ -164,4 +164,63 @@
 실제 코드에서는 다음과 같이 입력 변수와 타깃 변수를 구분하였다.
 
 ```python
-FEATURES = [c
+FEATURES = [c for c in df.columns if c != TARGET]
+X = df[FEATURES]
+y = df[TARGET]
+```
+
+## 3.2 계층화 데이터 분할
+
+전체 데이터의 15%를 Test로 먼저 분리하고, 나머지에서 `0.15/0.85` 비율로 Validation을 분리했다. 두 번 모두 `stratify`를 적용했고 `random_state=42`를 사용했다.
+
+| 집합 | 행 수 | 구매 비율 |
+|---|---:|---:|
+| Train | 8,630 | 15.48% |
+| Validation | 1,850 | 15.46% |
+| Test | 1,850 | 15.46% |
+
+세 집합의 구매 비율이 전체 비율(15.47%)과 거의 같다. `stratify`는 클래스 불균형을 없애는 방법이 아니라, 불균형한 비율을 각 집합에 비슷하게 유지하는 방법이다. 1일차 회귀는 시간 순서가 있는 데이터라 날짜순으로 나눴지만, 이번 데이터는 각 세션을 독립된 관측으로 보아 클래스 비율 유지를 우선했다.
+
+## 3.3 구매 여부와 관련된 특성 분석 (Train 데이터)
+
+방문자 유형별 구매율은 다음과 같다.
+
+| VisitorType | 세션 수 | 구매율 |
+|---|---:|---:|
+| New_Visitor | 1,162 | 25.2% |
+| Other | 63 | 15.9% |
+| Returning_Visitor | 7,405 | 14.0% |
+
+구매율이 가장 높은 유형은 New_Visitor였다. 다만 `Other`는 세션 수가 63개로 적어 비율의 불확실성이 크다.
+
+구매·미구매 세션의 주요 특성 중앙값은 다음과 같다.
+
+| 특성 | 미구매 (0) | 구매 (1) |
+|---|---:|---:|
+| `ProductRelated` | 16.0 | 29.0 |
+| `ProductRelated_Duration` | 517.58 | 1069.66 |
+| `PageValues` | 0.000 | 17.543 |
+| `ExitRates` | 0.029 | 0.015 |
+
+구매 세션은 제품 페이지를 더 많이, 더 오래 방문했고 `PageValues`가 높았으며 `ExitRates`는 낮았다. 특성 분석은 Validation·Test 정보가 선택에 영향을 주지 않도록 Train에서만 수행했다. `PageValues`는 거래 직전 페이지의 가치를 나타내는 값이라, 실제로 구매 전에 예측해야 하는 서비스에서는 같은 시점에 얻을 수 있는 정보인지 확인이 필요하다. 이 점은 모델의 한계로 남는다.
+
+## 4. CP-03. 데이터 전처리 및 PyTorch 입력 준비
+
+| 구분 | 변수 | 처리 |
+|---|---|---|
+| 범주형 (6개) | `Month`, `OperatingSystems`, `Browser`, `Region`, `TrafficType`, `VisitorType` | OneHotEncoder |
+| 수치형 (10개) | `Administrative`, `Administrative_Duration`, `Informational`, `Informational_Duration`, `ProductRelated`, `ProductRelated_Duration`, `BounceRates`, `ExitRates`, `PageValues`, `SpecialDay` | StandardScaler |
+| 이진형 (1개) | `Weekend` | 그대로 통과 (0/1 변환 후) |
+
+`OperatingSystems`, `Browser`, `Region`, `TrafficType`은 숫자로 저장되어 있지만 크기가 아니라 종류를 나타내는 코드이므로 범주형으로 처리했다. `handle_unknown="ignore"`는 Validation·Test에 Train에 없던 범주가 나와도 오류 없이 처리하기 위해 설정했다. 전처리 기준은 Train에서만 `fit`하고 Validation에는 `transform`만 적용했다.
+
+- **Train 전처리 전후 Shape:** (8,630, 17) → (8,630, 73), Validation (1,850, 73)
+- **Tensor:** 입력 `torch.Size([8630, 73])`, 타깃 `torch.Size([8630])`, 둘 다 `float32`
+- **DataLoader:** 배치 크기 256, `shuffle=True`, 미니배치 34개
+
+## 5. 데이터 분석 요약
+
+- 구매 세션이 15.47%뿐인 불균형 데이터라 모두 미구매로 예측해도 Accuracy가 약 0.845가 되므로, Accuracy만으로는 모델을 평가할 수 없다.
+- `stratify`로 세 집합의 구매 비율을 같게 유지했고, 범주형 코드는 OneHotEncoder로 처리해 PyTorch용 `float32` Tensor로 준비했다.
+
+> 불균형 데이터에서 어떤 지표를 우선할지는 `adr.md`의 의사결정 ③에 기록했다.

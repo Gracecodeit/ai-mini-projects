@@ -22,12 +22,12 @@
 - **신경망 구조:** 입력 → 64 → 32 → 1 (ReLU, Dropout 0.1)
 - **손실 함수 / 옵티마이저:** `BCEWithLogitsLoss` / Adam
 - **학습 조건:** 최대 25 epoch, batch size 256, learning rate 0.001
-- **Validation F1 최고 에포크:** Notebook 출력 재확인
+- **Validation F1 최고 에포크:** 25 (최대 학습 에포크와 같아, 더 학습하면 개선될 여지가 있음)
 - **MLP-A Train F1 / Validation F1:** **0.709 / 0.633**
 - **MLP-A Validation Precision / Recall:** **0.717 / 0.566**
 
 **분석:**  
-MLP-A는 LogisticRegression보다 Validation F1이 0.490에서 0.633으로 향상되었다. 다만 Train F1(0.709)이 Validation F1(0.633)보다 높아 학습 데이터와 검증 데이터 사이에 성능 차이가 나타났다. 학습 손실과 에포크별 F1 그래프의 구체적인 변화는 Notebook 그래프를 기준으로 최종 확인한다.
+MLP-A는 LogisticRegression보다 Validation F1이 0.490에서 0.633으로 향상되었다. 다만 Train F1(0.709)이 Validation F1(0.633)보다 높아 학습 데이터와 검증 데이터 사이에 성능 차이가 나타났다. 마지막 5개 에포크(21~25)에서 Train loss는 0.217에서 0.212로, Validation F1은 0.618에서 0.633으로 완만하게 변했고, 최고 Validation F1 에포크가 학습 상한인 25였다.
 
 ## 3. 클래스 가중 손실과 MLP 비교 (CP-06)
 
@@ -74,8 +74,8 @@ MLP-A는 LogisticRegression보다 Validation F1이 0.490에서 0.633으로 향�
 - **최종 재학습 에포크 / 가중 손실:** **17 / 적용**
 - **Test Accuracy / Precision / Recall / F1:** **0.859 / 0.527 / 0.843 / 0.649**
 - **Test 혼동행렬:** TN **1,348** / FP **216** / FN **45** / TP **241**
-- **모델 번들·설정 JSON 저장 및 재로딩 확인:** Notebook의 저장·재로딩 실행 결과 재확인
-- **`predict_purchase()` 실행 결과:** Notebook 실행 출력 재확인
+- **모델 번들·설정 JSON 저장 및 재로딩 확인:** 저장 전후 Test 예측 일치 `True`
+- **`predict_purchase()` 실행 결과:** Test 첫 번째 세션의 구매 확률 0.0058, 예측 0 (임계값 0.5), 실제 `Revenue` 0
 
 **해석:**  
 최종 Test F1은 0.649로 Validation F1 0.645와 유사하게 나타났다. Recall은 Validation 0.734에서 Test 0.843으로 높아졌고, Precision은 0.575에서 0.527로 낮아졌다. Test에서도 구매 고객을 비교적 잘 탐지했지만 FP가 216건 발생해 구매 예측의 정확성을 개선할 여지가 남아 있다. Test 데이터는 최종 모델 선택 이후 평가에만 사용했다.

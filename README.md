@@ -17,7 +17,7 @@
 
 | 구분 | 파일 |
 |---|---|
-| 실험 코드 | [01_regression_bike_demand.ipynb](mini-project-01/code/01_regression_bike_demand.ipynb) |
+| 실험 코드 | [01_regression_bike_sharing.ipynb](mini-project-01/code/01_regression_bike_sharing.ipynb) |
 | 실험 결과 | [모델 비교표](mini-project-01/results/01_model_comparison.csv), [최종 모델](mini-project-01/results/01_final_model.joblib) |
 | 분석 | [데이터 분석](mini-project-01/docs/01_regression_data_analysis.md), [모델 분석](mini-project-01/docs/01_regression_model_analysis.md) |
 | 핵심 의사결정 | [ADR](mini-project-01/docs/adr.md) |
@@ -66,7 +66,7 @@ MAE를 주요 모델 선택 기준으로 삼았지만, RMSE와 R²에서는 Line
 ```
 mini-project-01/
 ├── code/
-│   └── 01_regression_bike_demand.ipynb
+│   └── 01_regression_bike_sharing.ipynb
 ├── data/
 │   └── hour.csv
 ├── results/
@@ -86,8 +86,44 @@ cd ai-mini-projects
 uv sync
 ```
 
-VS Code에서 `mini-project-01/code/01_regression_bike_demand.ipynb`를 열고 `.venv` 커널을 선택한 뒤 Restart 후 Run All을 실행합니다.
+VS Code에서 `mini-project-01/code/01_regression_bike_sharing.ipynb`를 열고 `.venv` 커널을 선택한 뒤 Restart 후 Run All을 실행합니다.
 
 ### 문서 관리 원칙
 
 실험별 데이터 분석과 모델 분석은 번호가 붙은 문서에 기록하고, 주요 의사결정과 선택 근거는 `adr.md`에 정리합니다. 프로젝트의 핵심 결과와 실행 방법은 README에서 확인할 수 있도록 관리합니다.
+
+
+## Day 2. 온라인 쇼핑 구매 여부 예측 (분류, PyTorch MLP)
+
+- **목표:** 방문 세션의 행동 정보로 구매(`Revenue=1`) 여부 분류
+- **데이터:** UCI Online Shoppers Purchasing Intention (`online_shoppers_intention.csv`, 12,330행 × 18열, 구매 15.47%)
+- **사용 기술:** Python 3.11, uv, pandas, scikit-learn, PyTorch, joblib
+
+### 프로젝트 자료
+
+| 구분 | 파일 |
+|---|---|
+| 실험 코드 | [02_classification_online_shopping.ipynb](mini-project-01/code/02_classification_online_shopping.ipynb) |
+| 실험 결과 | [모델 비교표](mini-project-01/results/02_model_comparison.csv), [임계값 비교표](mini-project-01/results/02_threshold_comparison.csv), [모델 설정](mini-project-01/results/02_model_config.json), [최종 모델](mini-project-01/results/02_final_classifier.joblib) |
+| 분석 | [데이터 분석](mini-project-01/docs/02_classification_data_analysis.md), [모델 분석](mini-project-01/docs/02_classification_model_analysis.md) |
+| 핵심 의사결정 | [ADR](mini-project-01/docs/adr.md) (의사결정 ③·④) |
+
+### 실험 결과 (구매 클래스 기준, Validation)
+
+| 모델 | Accuracy | Precision | Recall | F1 |
+|---|---:|---:|---:|---:|
+| DummyClassifier | 0.845 | 0.000 | 0.000 | 0.000 |
+| LogisticRegression | 0.882 | 0.734 | 0.367 | 0.490 |
+| MLP-A (BCE) | 0.898 | 0.717 | 0.566 | 0.633 |
+| **MLP-B (weighted BCE)** | 0.875 | 0.575 | 0.734 | **0.645** |
+
+최종 모델은 Validation F1이 가장 높았던 **MLP-B, 임계값 0.5**이며, Train+Validation으로 17 epoch 재학습한 뒤 Test에서 한 번 평가했습니다.
+
+| Test 지표 | 결과 |
+|---|---:|
+| Accuracy | 0.859 |
+| Precision | 0.527 |
+| Recall | 0.843 |
+| F1 | 0.649 |
+
+- 한계: 구매 고객 탐지율(Recall)은 높지만 FP가 216건 발생해 Precision이 낮습니다.
