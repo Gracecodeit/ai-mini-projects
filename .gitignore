@@ -6,3 +6,21 @@ checkpoints/
 teacher-ai-mini-projects/
 .ipynb_checkpoints/
 .DS_Store
+
+# Virtual environment
+.venv/
+
+# Hugging Face cache and model weights
+**/weights/
+**/.cache/
+
+# Dataset raw files
+**/data/raw/
+
+# Lock and temporary files
+*.lock
+*.incomplete_info.lock
+
+# Python cache
+__pycache__/
+*.pyc
