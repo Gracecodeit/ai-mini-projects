@@ -37,6 +37,7 @@ ai-mini-projects/
 ├── pyproject.toml
 ├── uv.lock
 ├── .python-version
+├── .gitignore
 ├── mini-project-01/
 │   ├── code/
 │   │   ├── 01_regression_bike_sharing.ipynb
@@ -60,7 +61,9 @@ ai-mini-projects/
 └── mini-project-02/
     ├── code/
     │   ├── CV_YOLO26_MiniProject.ipynb
-    │   └── NLP_BERT_MiniProject_Student.ipynb
+    │   ├── NLP_BERT_MiniProject_Student.ipynb
+    │   └── nlp_bert_mini/
+    │       └── outputs/            # tables/*.csv · figures/ · reports/*.json (cache/ 제외)
     └── docs/
         ├── 01_cv_data_analysis.md
         ├── 01_cv_model_analysis.md
@@ -229,7 +232,7 @@ VS Code에서 노트북을 열고 커널로 `.venv`를 선택한 뒤 **Restart �
 1. `mini-project-02/code/NLP_BERT_MiniProject_Student.ipynb`를 열고 **00번 환경 설치 셀부터 순서대로** 실행합니다. 패키지, 데이터, 모델 가중치는 없으면 자동으로 준비되고 저장된 파일은 재사용합니다. NLP 노트북은 `uv sync` 대신 노트북 안의 pip 설치 셀로 패키지를 준비합니다.
 2. Day 1(CP-01–CP-06)에서 데이터 분석과 TF-IDF·BERT 검색기를 구현하고, Day 2(CP-07–CP-10)에서 평가·비교·오류 분석을 거쳐 `search_docs()`를 완성합니다.
 3. CP-01–CP-09는 Validation 질문만 사용하며, **Test 정답은 CP-10에서 처음 사용**합니다.
-4. 실행 환경은 Python 3.12.3, PyTorch 2.8.0+cu128, NVIDIA GeForce RTX 4090(GPU)이었으며, GPU가 없으면 CPU로 실행되어 BERT 임베딩 계산이 더 오래 걸립니다. 주요 패키지는 `transformers>=4.46,<5`, `sentence-transformers>=3.0,<6`, `scikit-learn>=1.3`입니다.
+4. 실행 환경은 Python 3.12.3, PyTorch 2.8.0+cu128, NVIDIA GeForce RTX 4090(GPU)이었으며, GPU가 없으면 CPU로 실행되어 BERT 임베딩 계산이 더 오래 걸립니다. 주요 패키지는 `transformers>=4.46,<5`, `sentence-transformers>=3.0,<6`, `scikit-learn>=1.3`입니다. 루트 `pyproject.toml`(uv)은 `transformers` 5.x를 사용하므로, uv 환경에서 이 노트북을 실행하면 00번 셀이 `transformers`·`datasets`를 5 미만으로 내릴 수 있습니다.
 5. RunPod처럼 `HF_HUB_ENABLE_HF_TRANSFER=1`이 켜진 환경에서는 `hf_transfer` 패키지가 필요합니다. 노트북의 데이터 준비 앞 셀이 이를 설치합니다.
 6. 원본 데이터와 대형 모델 가중치는 GitHub에 올리지 않습니다.
 

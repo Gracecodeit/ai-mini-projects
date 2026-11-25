@@ -24,3 +24,4 @@ teacher-ai-mini-projects/
 # Python cache
 __pycache__/
 *.pyc
+mini-project-02/code/nlp_bert_mini/outputs/cache/
